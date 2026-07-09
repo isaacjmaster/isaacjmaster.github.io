@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Cool 3D Space</title>
     <style>
-        /* Reset and full screen setup */
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #05050a;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* FIXED: Added the body selector so the browser knows what to style */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #05050a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -32,10 +34,8 @@
         document.body.appendChild(renderer.domElement);
 
         // 2. Create the 3D Object (Torus Knot)
-        // Arguments: radius, tube radius, tubular segments, radial segments, p, q
         const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
         
-        // Wireframe material gives it that cool retro-futuristic/cyberpunk look
         const material = new THREE.MeshBasicMaterial({
             color: 0x00ffcc,
             wireframe: true,
@@ -46,7 +46,6 @@
         const torusKnot = new THREE.Mesh(geometry, material);
         scene.add(torusKnot);
 
-        // Position camera back so we can see the object
         camera.position.z = 30;
 
         // 3. Mouse Interaction Tracking
@@ -55,17 +54,21 @@
         let targetX = 0;
         let targetY = 0;
 
-        const windowHalfX = window.innerWidth / 2;
-        const windowHalfY = window.innerHeight / 2;
+        // Changed to 'let' so we can update them on window resize
+        let windowHalfX = window.innerWidth / 2;
+        let windowHalfY = window.innerHeight / 2;
 
         document.addEventListener('mousemove', (event) => {
-            // Get mouse position relative to center of screen
             mouseX = (event.clientX - windowHalfX);
             mouseY = (event.clientY - windowHalfY);
         });
 
         // Handle window resizing seamlessly
         window.addEventListener('resize', () => {
+            // OPTIMIZATION: Update halves so mouse tracking stays centered
+            windowHalfX = window.innerWidth / 2;
+            windowHalfY = window.innerHeight / 2;
+
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -80,13 +83,12 @@
             torusKnot.rotation.y += 0.01;
 
             // Smooth parallax effect based on mouse movement
-            targetX = mouseX * 0.05;
-            targetY = mouseY * 0.05;
+            targetX = mouseX * 0.001; // Dialed down the multiplier slightly for smoother tracking
+            targetY = mouseY * 0.001;
 
             torusKnot.rotation.y += 0.05 * (targetX - torusKnot.rotation.y);
             torusKnot.rotation.x += 0.05 * (targetY - torusKnot.rotation.x);
 
-            // Render the updated scene
             renderer.render(scene, camera);
         };
 
