@@ -1,0 +1,18 @@
+body {
+    /* Replace the URL below with the actual link to your Lex Fridman image */
+    background-image: url('https://example.com/lex-fridman.jpg');
+    
+    /* Ensures the image covers the entire screen, stretching or cropping as needed */
+    background-size: cover;
+    
+    /* Centers the image perfectly */
+    background-position: center;
+    
+    /* Keeps the image fixed in place so it doesn't move when you scroll */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    /* Ensures the body takes up the full height of the viewport */
+    margin: 0;
+    min-height: 100vh;
+}
