@@ -3,38 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IJM</title>
+    <title>My Cool 3D Space</title>
     <style>
-        /* This is embedded CSS so you don't even need a separate style sheet yet */
-        body {
-            font-family: sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 40px;
-            text-align: center;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 600px;
-            margin: 0 auto;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #111;
-        }
-        p {
-            line-height: 1.6;
-        }
+        /* Reset and full screen setup */
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #05050a;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Hello World</h1>
-        <p>More to come...</p>
+    <div style="position: absolute; top: 10%; left: 5%; color: white; z-index: 10; pointer-events: none;">
+        <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; background: linear-gradient(45deg, #00ffcc, #0077ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WELCOME TO THE FUTURE</h1>
+        <p style="color: #8a8a9e; font-size: 1.1rem;">Move your mouse to warp the view.</p>
     </div>
 
+    <script>
+        // 1. Setup Scene, Camera, and Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        // 2. Create the 3D Object (Torus Knot)
+        // Arguments: radius, tube radius, tubular segments, radial segments, p, q
+        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+        
+        // Wireframe material gives it that cool retro-futuristic/cyberpunk look
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00ffcc,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        // Position camera back so we can see the object
+        camera.position.z = 30;
+
+        // 3. Mouse Interaction Tracking
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            // Get mouse position relative to center of screen
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        // Handle window resizing seamlessly
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // 4. Animation Loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+
+            // Constant automatic spinning
+            torusKnot.rotation.x += 0.005;
+            torusKnot.rotation.y += 0.01;
+
+            // Smooth parallax effect based on mouse movement
+            targetX = mouseX * 0.05;
+            targetY = mouseY * 0.05;
+
+            torusKnot.rotation.y += 0.05 * (targetX - torusKnot.rotation.y);
+            torusKnot.rotation.x += 0.05 * (targetY - torusKnot.rotation.x);
+
+            // Render the updated scene
+            renderer.render(scene, camera);
+        };
+
+        animate();
+    </script>
 </body>
 </html>
