@@ -1,18 +1,68 @@
-body {
-    /* Replace the URL below with the actual link to your Lex Fridman image */
-    background-image: url('https://i.ytimg.com/vi/I94u4_Wb82E/maxresdefault.jpg');
-    
-    /* Ensures the image covers the entire screen, stretching or cropping as needed */
-    background-size: cover;
-    
-    /* Centers the image perfectly */
-    background-position: center;
-    
-    /* Keeps the image fixed in place so it doesn't move when you scroll */
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    
-    /* Ensures the body takes up the full height of the viewport */
+/* 1. Reset default browser styles */
+* {
     margin: 0;
-    min-height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 2. Style the Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%);
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.navbar nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.3s;
+}
+
+.navbar nav a:hover {
+    color: #00adb5;
+}
+
+/* 3. Style the Hero Section (Replacing the old layout image) */
+.hero-section {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #222831, #393e46);
+    color: #eeeeee;
+    padding: 20px;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #b3b3b3;
+}
+
+/* 4. Style a Call-to-Action Button */
+.cta-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    background-color: #00adb5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.cta-btn:hover {
+    background-color: #007a80;
+    transform: translateY(-2px);
 }
