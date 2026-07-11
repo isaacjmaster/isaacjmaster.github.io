@@ -5,30 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>isaacmaster.com</title>
     
-    <!-- Include Libraries for Playability -->
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
     <style>
-        body { background-color: #f7f7f7; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .container { display: flex; flex-direction: column; align-items: center; gap: 30px; }
-        #myBoard { width: 400px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+        body { 
+            background-color: #f7f7f7; 
+            font-family: sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+        }
+        .container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 30px; 
+        }
+        #myBoard { 
+            width: 400px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+        }
+        @media (max-width: 450px) {
+            #myBoard {
+                width: 320px; /* Responsive resizing for mobile screens */
+            }
+        }
         
         .yt-button { 
-            display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; 
-            background-color: #111; color: #fff; text-decoration: none; font-size: 14px; 
-            border-radius: 6px; transition: background-color 0.2s;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px; 
+            padding: 10px 20px; 
+            background-color: #111; 
+            color: #fff; 
+            text-decoration: none; 
+            font-size: 14px; 
+            border-radius: 6px; 
+            transition: background-color 0.2s;
         }
-        .yt-button:hover { background-color: #ff0000; }
+        .yt-button:hover { 
+            background-color: #ff0000; 
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div id="myBoard"></div>
-        <a href="https://www.youtube.com/@isaacjmaster" target="_blank" class="yt-button">Watch on YouTube</a>
+        <a href="https://www.youtube.com/@isaacjmaster" target="_blank" class="yt-button">YouTube Channel</a>
     </div>
 
     <script>
@@ -39,8 +69,7 @@
             var possibleMoves = game.moves();
             if (possibleMoves.length === 0) return;
 
-            // Simple "Moderate" AI: It looks for any move that captures a piece.
-            // If none, it picks a random move.
+            // Simple "Moderate" AI: Filters for captures first
             var captureMoves = possibleMoves.filter(m => m.includes('x'));
             var move = captureMoves.length > 0 
                 ? captureMoves[Math.floor(Math.random() * captureMoves.length)]
@@ -56,10 +85,16 @@
             window.setTimeout(makeAiMove, 250);
         }
 
+        // Fixed to fetch from an absolute HTTPS public repository asset pool
+        function pieceTheme (piece) {
+            return 'https://raw.githubusercontent.com/chrisoakman/chessboardjs/master/website/img/chesspieces/wikipedia/' + piece + '.png';
+        }
+
         var config = {
             draggable: true,
             position: 'start',
-            onDrop: onDrop
+            onDrop: onDrop,
+            pieceTheme: pieceTheme
         };
         
         board = Chessboard('myBoard', config);
