@@ -33,7 +33,7 @@
         }
         @media (max-width: 450px) {
             #myBoard {
-                width: 320px; /* Responsive resizing for mobile screens */
+                width: 320px; 
             }
         }
         
@@ -69,7 +69,7 @@
             var possibleMoves = game.moves();
             if (possibleMoves.length === 0) return;
 
-            // Simple "Moderate" AI: Filters for captures first
+            // Moderate AI: Filter for captures first
             var captureMoves = possibleMoves.filter(m => m.includes('x'));
             var move = captureMoves.length > 0 
                 ? captureMoves[Math.floor(Math.random() * captureMoves.length)]
@@ -85,16 +85,12 @@
             window.setTimeout(makeAiMove, 250);
         }
 
-        // Fixed to fetch from an absolute HTTPS public repository asset pool
-        function pieceTheme (piece) {
-            return 'https://raw.githubusercontent.com/chrisoakman/chessboardjs/master/website/img/chesspieces/wikipedia/' + piece + '.png';
-        }
-
         var config = {
             draggable: true,
             position: 'start',
             onDrop: onDrop,
-            pieceTheme: pieceTheme
+            // Uses the official secure image asset pool from chessboardjs directly
+            pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
         };
         
         board = Chessboard('myBoard', config);
